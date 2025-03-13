@@ -5,7 +5,7 @@ import axios from "axios";
 const App = () => {
   const [data, setData] = useState({});
   const [input, setInput] = useState("");
-  const [weatherIcon, setWeatherIcon] = useState(""); // Store weather icon URL
+  const [weatherIcon, setWeatherIcon] = useState("");
 
   const getData = async () => {
     try {
@@ -13,11 +13,10 @@ const App = () => {
         `http://localhost:5000/weather?city=${input}`
       );
       setData(response.data);
-
-      // Set weather icon based on condition
+      
       const weatherCondition = response.data.weather[0].main;
       let iconSrc = "";
-
+      
       if (weatherCondition === "Clouds") {
         iconSrc = "../images/clouds.png";
       } else if (weatherCondition === "Clear") {
@@ -28,6 +27,11 @@ const App = () => {
         iconSrc = "../images/drizzle.png";
       } else if (weatherCondition === "Mist") {
         iconSrc = "../images/mist.png";
+      } else if (weatherCondition === "Snow"){
+        iconSrc = "../images/snow.png";
+      }
+      else if(weatherCondition === 'Smoke'){
+        iconSrc = "../images/smoke.png";
       }
 
       setWeatherIcon(iconSrc)
@@ -47,6 +51,10 @@ const App = () => {
           className="border-0 outline-0 bg-teal-100 text-gray-700 py-[10px] px-[25px] h-12 rounded-full flex-1 pr-12 text-lg"
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e)=> {
+            if(e.key === 'Enter')
+              getData();
+          }}
         />
         {input && (
           <button
@@ -85,7 +93,7 @@ const App = () => {
                 />
                 {data.main && (
                   <p className="text-xl mb-2 -mt-1.5 pt-4 mr-7">
-                    Humidity: <span className="block font-bold">{data.main.humidity} %</span>
+                    Humidity: <span className="block text-violet-700 font-bold">{data.main.humidity} %</span>
                   </p>
                 )}
               </div>
@@ -98,7 +106,7 @@ const App = () => {
                 />
                 {data.main && (
                   <p className="text-xl -mt-1.5">
-                    Pressure: <span className="block font-bold">{data.main.pressure} Pa</span> 
+                    Pressure: <span className="block text-amber-300 font-bold">{data.main.pressure} Pa</span> 
                   </p>
                 )}
               </div>
@@ -109,7 +117,7 @@ const App = () => {
                 {data.main && (
                   <p className="text-xl mb-2 -mt-1.5 pt-4">
                     Description:
-                    <span className="block font-bold">{data.weather[0].main}</span>
+                    <span className="block text-red-500 font-bold">{data.weather[0].main}</span>
                   </p>
                 )}
               </div>
@@ -117,14 +125,14 @@ const App = () => {
                 <img src="../images/wind.png" className="w-10 mr-2.5 " alt="" />
                 {data.main && (
                   <p className="text-xl -mt-1.5">
-                    Wind speed: <span className="block font-bold">{data.wind.speed} km/h</span>
+                    Wind speed: <span className="block text-green-400 font-bold">{data.wind.speed} km/h</span>
                   </p>
                 )}
               </div>
             </div>
           </>
         ) : (
-          <p className="font-bold text-2xl pt-2">Please enter city name</p>
+          <p className="font-bold text-2xl pt-2">Please enter valid city name</p>
         )}
       </div>
     </div>
