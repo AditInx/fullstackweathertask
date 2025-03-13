@@ -33,6 +33,9 @@ const App = () => {
       else if(weatherCondition === 'Smoke'){
         iconSrc = "../images/smoke.png";
       }
+      else{
+        iconSrc = "../images/weather.png";
+      }
 
       setWeatherIcon(iconSrc)
     } catch (error) {
